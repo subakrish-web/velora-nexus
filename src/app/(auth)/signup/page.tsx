@@ -1,7 +1,49 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Chrome, Github } from "lucide-react";
+import { Chrome, Github, Loader2 } from "lucide-react";
 
 export default function SignupPage() {
+  const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Registration failed");
+        return;
+      }
+
+      router.push("/login?registered=true");
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOAuth = (provider: string) => {
+    window.location.href = `/api/auth/signin/${provider}`;
+  };
+
   return (
     <div className="w-full max-w-md">
       <div className="mb-8">
@@ -11,12 +53,24 @@ export default function SignupPage() {
         </p>
       </div>
 
+      {error && (
+        <div className="mb-4 rounded-lg border border-destructive/20 bg-destructive/5 px-4 py-3 text-sm text-destructive">
+          {error}
+        </div>
+      )}
+
       <div className="space-y-3">
-        <button className="flex w-full items-center justify-center gap-3 rounded-lg border border-border bg-secondary px-4 py-2.5 text-sm font-medium transition-colors hover:bg-secondary/80">
+        <button
+          onClick={() => handleOAuth("google")}
+          className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg border border-border bg-secondary px-4 py-2.5 text-sm font-medium transition-colors hover:bg-secondary/80"
+        >
           <Chrome className="h-5 w-5" />
           Continue with Google
         </button>
-        <button className="flex w-full items-center justify-center gap-3 rounded-lg border border-border bg-secondary px-4 py-2.5 text-sm font-medium transition-colors hover:bg-secondary/80">
+        <button
+          onClick={() => handleOAuth("github")}
+          className="flex w-full cursor-pointer items-center justify-center gap-3 rounded-lg border border-border bg-secondary px-4 py-2.5 text-sm font-medium transition-colors hover:bg-secondary/80"
+        >
           <Github className="h-5 w-5" />
           Continue with GitHub
         </button>
@@ -28,53 +82,63 @@ export default function SignupPage() {
         <div className="h-px flex-1 bg-border" />
       </div>
 
-      <form className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="name" className="text-sm font-medium">
-            Full Name
-          </label>
+          <label htmlFor="name" className="text-sm font-medium">Full Name</label>
           <input
             id="name"
             type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             placeholder="John Doe"
+            required
             className="mt-1.5 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
         <div>
-          <label htmlFor="email" className="text-sm font-medium">
-            Email
-          </label>
+          <label htmlFor="email" className="text-sm font-medium">Email</label>
           <input
             id="email"
             type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="you@example.com"
+            required
             className="mt-1.5 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
         <div>
-          <label htmlFor="password" className="text-sm font-medium">
-            Password
-          </label>
+          <label htmlFor="password" className="text-sm font-medium">Password</label>
           <input
             id="password"
             type="password"
-            placeholder="Create a strong password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Create a strong password (8+ characters)"
+            required
+            minLength={8}
             className="mt-1.5 w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
           />
         </div>
         <button
           type="submit"
-          className="w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90"
+          disabled={loading}
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50"
         >
+          {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           Create Account
         </button>
       </form>
 
-      <p className="mt-6 text-center text-sm text-muted-foreground">
+      <p className="mt-4 text-center text-xs text-muted-foreground">
+        By creating an account, you agree to our{" "}
+        <Link href="/terms" className="text-primary hover:underline">Terms</Link> and{" "}
+        <Link href="/privacy" className="text-primary hover:underline">Privacy Policy</Link>.
+      </p>
+
+      <p className="mt-4 text-center text-sm text-muted-foreground">
         Already have an account?{" "}
-        <Link href="/login" className="text-primary hover:underline">
-          Sign in
-        </Link>
+        <Link href="/login" className="text-primary hover:underline">Sign in</Link>
       </p>
     </div>
   );
