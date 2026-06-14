@@ -18,7 +18,12 @@ model User {
   hashedPassword String?
   role           Role      @default(CREATOR)
   plan           Plan      @default(FREE)
-  stripeCustomerId String?
+  stripeCustomerId     String?
+  preferredAiProvider  String?  @default("groq")
+  preferredAiModel     String?  @default("llama-3.1-8b-instant")
+  aiApiKeys            Json?
+  trialCredits         Int      @default(50)
+  trialCreditsUsed     Int      @default(0)
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
 

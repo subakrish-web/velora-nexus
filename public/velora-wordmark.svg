@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" fill="none">
+  <defs>
+    <linearGradient id="goldV" x1="0" y1="0" x2="60" y2="60" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FDE68A"/>
+      <stop offset="50%" stop-color="#D97706"/>
+      <stop offset="100%" stop-color="#92400E"/>
+    </linearGradient>
+  </defs>
+  <!-- V mark (compact) -->
+  <path d="M8 8 L22 8 L34 38 L26 38 Z" fill="url(#goldV)"/>
+  <path d="M60 8 L46 8 L34 38 L42 38 Z" fill="url(#goldV)"/>
+  <path d="M34 14 L38 26 L34 36 L30 26 Z" fill="#FEF3C7" opacity="0.9"/>
+  <!-- velora text -->
+  <text x="72" y="38" font-family="Georgia, serif" font-size="32" font-weight="bold" fill="white" letter-spacing="-0.5">velora</text>
+  <!-- NEXUS text -->
+  <text x="74" y="56" font-family="Georgia, serif" font-size="11" fill="#D97706" letter-spacing="6">NEXUS</text>
+  <!-- decorative lines around NEXUS -->
+  <line x1="74" y1="48" x2="90" y2="48" stroke="#D97706" stroke-width="1" opacity="0.7"/>
+  <line x1="176" y1="48" x2="192" y2="48" stroke="#D97706" stroke-width="1" opacity="0.7"/>
+</svg>

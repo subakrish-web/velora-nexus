@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,7 @@ import {
   Package,
   Settings,
   ShoppingCart,
+  Sparkles,
   Users,
   Zap,
   X,
@@ -29,6 +31,7 @@ const sidebarLinks = [
   { label: "Payments", href: "/dashboard/payments", icon: CreditCard },
   { label: "Members", href: "/dashboard/members", icon: Users },
   { label: "AI Agents", href: "/dashboard/ai", icon: Bot },
+  { label: "AI Providers", href: "/dashboard/ai-providers", icon: Sparkles },
   { label: "Social", href: "/dashboard/social", icon: Globe },
   { label: "Automations", href: "/dashboard/automations", icon: Zap },
   { label: "Templates", href: "/dashboard/templates", icon: LayoutTemplate },
@@ -64,11 +67,23 @@ export function Sidebar({ mobileOpen, onMobileClose }: SidebarProps) {
         )}
       >
         <div className="flex h-16 items-center justify-between border-b border-sidebar-border px-4">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-primary">
-              <span className="font-display text-sm text-white">V</span>
-            </div>
-            {(!collapsed || mobileOpen) && <span className="font-display text-lg">Velora</span>}
+          <Link href="/dashboard" className="flex items-center gap-2 min-w-0">
+            <Image
+              src="/velora-logo.svg"
+              alt="Velora Nexus"
+              width={32}
+              height={32}
+              className="shrink-0"
+            />
+            {(!collapsed || mobileOpen) && (
+              <Image
+                src="/velora-wordmark.svg"
+                alt="Velora Nexus"
+                width={120}
+                height={30}
+                className="h-7 w-auto"
+              />
+            )}
           </Link>
           <button
             onClick={mobileOpen ? onMobileClose : () => setCollapsed(!collapsed)}
