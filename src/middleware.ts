@@ -7,11 +7,12 @@ export default auth((req) => {
   const { pathname } = req.nextUrl;
   const isLoggedIn = !!req.auth;
 
-  const protectedPaths = ["/dashboard", "/admin"];
+  const protectedPaths = ["/dashboard", "/admin", "/api/admin"];
   const authPaths = ["/login", "/signup"];
 
   const isProtected = protectedPaths.some((p) => pathname.startsWith(p));
   const isAuthPage = authPaths.some((p) => pathname.startsWith(p));
+  const isApiAdmin = pathname.startsWith("/api/admin");
 
   if (isProtected && !isLoggedIn) {
     const loginUrl = new URL("/login", req.url);
@@ -23,9 +24,12 @@ export default auth((req) => {
     return NextResponse.redirect(new URL("/dashboard", req.url));
   }
 
-  if (pathname.startsWith("/admin") && isLoggedIn) {
+  if ((pathname.startsWith("/admin") || isApiAdmin) && isLoggedIn) {
     const role = (req.auth?.user as Record<string, unknown>)?.role;
     if (role !== "ADMIN" && role !== "SUPER_ADMIN") {
+      if (isApiAdmin) {
+        return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      }
       return NextResponse.redirect(new URL("/dashboard", req.url));
     }
   }
@@ -34,5 +38,5 @@ export default auth((req) => {
 });
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/signup"],
+  matcher: ["/dashboard/:path*", "/admin/:path*", "/api/admin/:path*", "/login", "/signup"],
 };

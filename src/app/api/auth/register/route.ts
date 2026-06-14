@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
     const existing = await db.user.findUnique({ where: { email } });
     if (existing) {
       return NextResponse.json(
-        { error: "Email already registered" },
+        { error: "Unable to create account with this email" },
         { status: 409 }
       );
     }

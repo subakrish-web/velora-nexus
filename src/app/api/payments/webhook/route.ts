@@ -5,7 +5,15 @@ import type Stripe from "stripe";
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
-  const sig = req.headers.get("stripe-signature")!;
+  const sig = req.headers.get("stripe-signature");
+
+  if (!sig) {
+    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
+  }
+
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    return NextResponse.json({ error: "Webhook not configured" }, { status: 500 });
+  }
 
   let event: Stripe.Event;
 
@@ -13,7 +21,7 @@ export async function POST(req: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       sig,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET
     );
   } catch {
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });
@@ -25,18 +33,21 @@ export async function POST(req: NextRequest) {
       const userId = session.metadata?.userId;
       const plan = session.metadata?.plan;
 
+      const validPlans = ["GO", "PRO", "PRO_MAX", "AGENCY"] as const;
       if (userId && plan) {
-        const planEnum = plan.toUpperCase().replace(" ", "_") as "GO" | "PRO" | "PRO_MAX" | "AGENCY";
+        const planEnum = plan.toUpperCase().replace(" ", "_");
+        if (!validPlans.includes(planEnum as typeof validPlans[number])) break;
+        const validatedPlan = planEnum as typeof validPlans[number];
         await db.user.update({
           where: { id: userId },
-          data: { plan: planEnum },
+          data: { plan: validatedPlan },
         });
 
         await db.subscription.create({
           data: {
             userId,
             stripeSubscriptionId: session.subscription as string,
-            plan: planEnum,
+            plan: validatedPlan,
             status: "ACTIVE",
             currentPeriodStart: new Date(),
             currentPeriodEnd: new Date(Date.now() + 30 * 86400000),
