@@ -32,6 +32,7 @@ const sidebarLinks = [
   { label: "Members", href: "/dashboard/members", icon: Users },
   { label: "AI Agents", href: "/dashboard/ai", icon: Bot },
   { label: "AI Providers", href: "/dashboard/ai-providers", icon: Sparkles },
+  { label: "Trial & Testing", href: "/dashboard/trial", icon: Zap },
   { label: "Social", href: "/dashboard/social", icon: Globe },
   { label: "Automations", href: "/dashboard/automations", icon: Zap },
   { label: "Templates", href: "/dashboard/templates", icon: LayoutTemplate },

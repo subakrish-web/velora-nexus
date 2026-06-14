@@ -19,6 +19,7 @@ model User {
   role           Role      @default(CREATOR)
   plan           Plan      @default(FREE)
   stripeCustomerId     String?
+  trialId              String?  @unique @default(cuid())
   preferredAiProvider  String?  @default("groq")
   preferredAiModel     String?  @default("llama-3.1-8b-instant")
   aiApiKeys            Json?

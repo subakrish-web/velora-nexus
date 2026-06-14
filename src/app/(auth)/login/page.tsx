@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Chrome, Github, Loader2, FlaskConical } from "lucide-react";
-
-const DEMO_EMAIL = "demo@velora.app";
-const DEMO_PASSWORD = "VeloraDemo2024!";
+import { Chrome, Github, Loader2, FlaskConical, Sparkles } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -14,6 +12,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [demoLoading, setDemoLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,13 +20,13 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/auth/callback/credentials", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
       });
 
-      if (res.ok) {
+      if (result?.ok) {
         router.push("/dashboard");
         router.refresh();
       } else {
@@ -41,29 +40,41 @@ export default function LoginPage() {
   };
 
   const handleOAuth = (provider: string) => {
-    window.location.href = `/api/auth/signin/${provider}`;
+    signIn(provider, { callbackUrl: "/dashboard" });
   };
 
   const handleDemoLogin = async () => {
     setError("");
-    setLoading(true);
+    setDemoLoading(true);
     try {
-      const res = await fetch("/api/auth/demo", { method: "POST" });
-      const data = await res.json();
-      if (data.success) {
+      // Step 1: Ensure demo user exists in DB
+      const setup = await fetch("/api/auth/demo", { method: "POST" });
+      const data = await setup.json();
+
+      if (!data.success) {
+        setError(data.error ?? "Demo setup failed.");
+        return;
+      }
+
+      // Step 2: Sign in with the returned credentials
+      const result = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (result?.ok) {
+        // Step 3: Seed demo data in background, then redirect
+        fetch("/api/demo/seed", { method: "POST" }).catch(() => null);
         router.push("/dashboard");
         router.refresh();
       } else {
-        // Fallback: pre-fill credentials so user can sign in manually
-        setEmail(DEMO_EMAIL);
-        setPassword(DEMO_PASSWORD);
-        setError(data.error ?? "Demo auto-login failed — credentials pre-filled, click Sign In.");
+        setError("Demo login failed — please try manually with demo@velora.app / VeloraDemo2024!");
       }
     } catch {
-      setEmail(DEMO_EMAIL);
-      setPassword(DEMO_PASSWORD);
+      setError("Network error. Please try again.");
     } finally {
-      setLoading(false);
+      setDemoLoading(false);
     }
   };
 
@@ -77,22 +88,32 @@ export default function LoginPage() {
       </div>
 
       {/* Demo access banner */}
-      <div className="mb-6 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3">
-        <div className="flex items-start gap-3">
-          <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
-          <div className="flex-1 text-sm">
-            <p className="font-medium text-primary">Try the demo</p>
-            <p className="mt-0.5 text-muted-foreground">
-              Explore all features with a pre-loaded test account.
-            </p>
-            <button
-              type="button"
-              onClick={handleDemoLogin}
-              className="mt-2 cursor-pointer rounded-md bg-primary px-3 py-1 text-xs font-medium text-white transition-opacity hover:opacity-90"
-            >
-              Fill Demo Credentials
-            </button>
+      <div className="mb-6 overflow-hidden rounded-xl border border-primary/30 bg-gradient-to-br from-primary/10 to-primary/5">
+        <div className="px-4 py-3">
+          <div className="flex items-start gap-3">
+            <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+            <div className="flex-1 text-sm">
+              <p className="font-medium text-primary">Try a live demo — no signup needed</p>
+              <p className="mt-0.5 text-xs text-muted-foreground">
+                Pre-loaded with products, AI agents, automations, and analytics.
+              </p>
+            </div>
           </div>
+          <button
+            type="button"
+            onClick={handleDemoLogin}
+            disabled={demoLoading}
+            className="mt-3 flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary py-2 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-60"
+          >
+            {demoLoading ? (
+              <><Loader2 className="h-4 w-4 animate-spin" /> Setting up demo…</>
+            ) : (
+              <><Sparkles className="h-4 w-4" /> Launch Demo Dashboard</>
+            )}
+          </button>
+          <p className="mt-2 text-center text-[10px] text-muted-foreground">
+            Trial ID: <span className="font-mono text-primary">VELORA-DEMO-2024</span>
+          </p>
         </div>
       </div>
 
@@ -121,7 +142,7 @@ export default function LoginPage() {
 
       <div className="my-6 flex items-center gap-3">
         <div className="h-px flex-1 bg-border" />
-        <span className="text-xs text-muted-foreground">or</span>
+        <span className="text-xs text-muted-foreground">or sign in with email</span>
         <div className="h-px flex-1 bg-border" />
       </div>
 
@@ -167,7 +188,7 @@ export default function LoginPage() {
 
       <p className="mt-6 text-center text-sm text-muted-foreground">
         Don&apos;t have an account?{" "}
-        <Link href="/signup" className="text-primary hover:underline">Sign up</Link>
+        <Link href="/signup" className="text-primary hover:underline">Sign up free</Link>
       </p>
     </div>
   );
