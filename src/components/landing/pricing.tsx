@@ -73,11 +73,11 @@ export function Pricing() {
     <section id="pricing" className="py-20 sm:py-32">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">
-            Simple, <span className="gradient-text">Transparent Pricing</span>
+          <h2 className="font-display text-3xl sm:text-4xl">
+            Simple, <span className="gradient-text">Honest Pricing</span>
           </h2>
-          <p className="mt-4 text-muted-foreground">
-            Start free, scale as you grow. No hidden fees, no surprises.
+          <p className="mt-4 text-lg text-muted-foreground">
+            Start free, scale when you&apos;re ready. No hidden fees, cancel anytime.
           </p>
         </div>
 
@@ -85,7 +85,7 @@ export function Pricing() {
           {plans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative rounded-2xl border p-6 transition-all ${
+              className={`relative rounded-2xl border p-6 transition-all duration-200 ${
                 plan.highlighted
                   ? "border-primary bg-primary/5 shadow-lg shadow-primary/10"
                   : "border-border bg-card hover:border-primary/30"
@@ -97,28 +97,28 @@ export function Pricing() {
                 </div>
               )}
               <div>
-                <h3 className="text-lg font-bold">{plan.name}</h3>
+                <h3 className="font-display text-lg">{plan.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {plan.description}
                 </p>
               </div>
               <div className="mt-4">
-                <span className="text-4xl font-bold">${plan.price}</span>
+                <span className="font-display text-4xl">${plan.price}</span>
                 <span className="text-muted-foreground">/month</span>
               </div>
               <ul className="mt-6 space-y-3">
                 {plan.features.map((feature) => (
                   <li key={feature} className="flex items-center gap-2 text-sm">
-                    <Check className="h-4 w-4 shrink-0 text-primary" />
+                    <Check className="h-4 w-4 shrink-0 text-accent" />
                     <span className="text-muted-foreground">{feature}</span>
                   </li>
                 ))}
               </ul>
               <Link
-                href="/signup"
-                className={`mt-6 block rounded-lg py-2.5 text-center text-sm font-medium transition-all ${
+                href={plan.name === "AGENCY" ? "/contact" : "/signup"}
+                className={`mt-6 block cursor-pointer rounded-lg py-2.5 text-center text-sm font-medium transition-all duration-200 ${
                   plan.highlighted
-                    ? "bg-primary text-white hover:bg-primary/90"
+                    ? "bg-primary text-white hover:opacity-90"
                     : "border border-border bg-secondary text-foreground hover:border-primary/30"
                 }`}
               >

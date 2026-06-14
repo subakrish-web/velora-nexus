@@ -17,7 +17,7 @@ export function StatCard({
   icon: Icon,
 }: StatCardProps) {
   return (
-    <div className="rounded-xl border border-border bg-card p-5">
+    <div className="rounded-xl border border-border bg-card p-5 transition-all duration-200 hover:border-primary/20">
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted-foreground">{title}</span>
         <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10">
@@ -25,7 +25,7 @@ export function StatCard({
         </div>
       </div>
       <div className="mt-3">
-        <span className="text-2xl font-bold">{value}</span>
+        <span className="font-display text-2xl">{value}</span>
         {change && (
           <span
             className={cn(

@@ -1,4 +1,4 @@
-import { Archive, Copy, Edit, MoreHorizontal, Package, Plus, Trash2 } from "lucide-react";
+import { Archive, Copy, Edit, Package, Plus } from "lucide-react";
 
 const products = [
   { id: 1, name: "Ultimate SEO Guide", type: "Ebook", price: "$49", sales: 342, status: "Active" },

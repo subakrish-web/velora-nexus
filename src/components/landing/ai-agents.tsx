@@ -1,11 +1,8 @@
 import {
   Brain,
   FileText,
-  LineChart,
   Megaphone,
   Package,
-  Search,
-  Shield,
   TrendingUp,
   Users,
 } from "lucide-react";
@@ -13,8 +10,8 @@ import {
 const agentCategories = [
   {
     title: "Content Agents",
-    color: "text-violet-400",
-    bg: "bg-violet-500/10",
+    color: "text-amber-400",
+    bg: "bg-amber-500/10",
     agents: [
       "Viral Content",
       "Trend Hunter",
@@ -27,6 +24,7 @@ const agentCategories = [
       "Content Calendar",
     ],
     icon: FileText,
+    description: "Create content that captures attention and drives engagement across every platform.",
   },
   {
     title: "Product Agents",
@@ -40,6 +38,7 @@ const agentCategories = [
       "Template Builder",
     ],
     icon: Package,
+    description: "Turn your expertise into digital products — ebooks, courses, templates — in minutes.",
   },
   {
     title: "Revenue Agents",
@@ -53,11 +52,12 @@ const agentCategories = [
       "Checkout Optimization",
     ],
     icon: TrendingUp,
+    description: "Optimize every step from first click to checkout. Find revenue you're leaving behind.",
   },
   {
     title: "Marketing Agents",
-    color: "text-amber-400",
-    bg: "bg-amber-500/10",
+    color: "text-rose-400",
+    bg: "bg-rose-500/10",
     agents: [
       "Email Marketing",
       "Campaign Agent",
@@ -66,11 +66,12 @@ const agentCategories = [
       "Lead Magnet",
     ],
     icon: Megaphone,
+    description: "Automated campaigns, email sequences, and referral programs that grow your list.",
   },
   {
     title: "Customer Success",
-    color: "text-rose-400",
-    bg: "bg-rose-500/10",
+    color: "text-violet-400",
+    bg: "bg-violet-500/10",
     agents: [
       "Retention Agent",
       "Community Agent",
@@ -78,6 +79,7 @@ const agentCategories = [
       "Feedback Agent",
     ],
     icon: Users,
+    description: "Keep customers happy, reduce churn, and turn buyers into lifelong fans.",
   },
   {
     title: "Intelligence Agents",
@@ -91,6 +93,7 @@ const agentCategories = [
       "Growth Agent",
     ],
     icon: Brain,
+    description: "Data-driven insights on competitors, trends, and growth opportunities.",
   },
 ];
 
@@ -103,13 +106,12 @@ export function AIAgents() {
             <Brain className="h-4 w-4" />
             30+ AI Agents
           </div>
-          <h2 className="text-3xl font-bold sm:text-4xl">
+          <h2 className="font-display text-3xl sm:text-4xl">
             Your AI Team,{" "}
             <span className="gradient-text">Always Working</span>
           </h2>
-          <p className="mt-4 text-muted-foreground">
-            Specialized AI agents that handle every aspect of your creator
-            business — from content creation to revenue optimization.
+          <p className="mt-4 text-lg text-muted-foreground">
+            Each agent is a specialist. Together, they run your entire creator business.
           </p>
         </div>
 
@@ -117,7 +119,7 @@ export function AIAgents() {
           {agentCategories.map((category) => (
             <div
               key={category.title}
-              className="rounded-2xl border border-border bg-card p-6"
+              className="rounded-2xl border border-border bg-card p-6 transition-all duration-200 hover:border-primary/20"
             >
               <div className="flex items-center gap-3">
                 <div
@@ -127,11 +129,12 @@ export function AIAgents() {
                 </div>
                 <h3 className="font-semibold">{category.title}</h3>
               </div>
+              <p className="mt-3 text-sm text-muted-foreground">{category.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {category.agents.map((agent) => (
                   <span
                     key={agent}
-                    className="rounded-lg border border-border bg-secondary px-3 py-1.5 text-xs text-muted-foreground"
+                    className="rounded-lg border border-border bg-secondary px-3 py-1.5 text-xs text-muted-foreground transition-colors duration-150 hover:border-primary/30 hover:text-foreground"
                   >
                     {agent}
                   </span>

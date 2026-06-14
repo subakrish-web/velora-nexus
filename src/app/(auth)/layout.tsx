@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { Zap } from "lucide-react";
+
+const CURRENT_YEAR = 2026;
 
 export default function AuthLayout({
   children,
@@ -9,14 +10,14 @@ export default function AuthLayout({
   return (
     <div className="flex min-h-screen">
       <div className="hidden w-1/2 flex-col justify-between bg-primary/5 p-12 lg:flex">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-            <Zap className="h-5 w-5 text-white" />
+        <Link href="/" className="flex items-center gap-2.5">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
+            <span className="font-display text-lg text-white">V</span>
           </div>
-          <span className="text-xl font-bold">Velora</span>
+          <span className="font-display text-xl">Velora</span>
         </Link>
         <div>
-          <h2 className="text-3xl font-bold">
+          <h2 className="font-display text-3xl">
             Create Content.
             <br />
             <span className="gradient-text">Velora Builds The Business.</span>
@@ -27,7 +28,7 @@ export default function AuthLayout({
           </p>
         </div>
         <p className="text-sm text-muted-foreground">
-          &copy; {new Date().getFullYear()} Velora. All rights reserved.
+          &copy; {CURRENT_YEAR} Velora Nexus. All rights reserved.
         </p>
       </div>
       <div className="flex w-full items-center justify-center p-8 lg:w-1/2">

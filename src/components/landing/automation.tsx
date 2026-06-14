@@ -19,15 +19,15 @@ const automations = [
     trigger: "Subscription Started",
     action: "Onboarding Flow",
     icon: Bell,
-    color: "text-violet-400",
-    bg: "bg-violet-500/10",
+    color: "text-amber-400",
+    bg: "bg-amber-500/10",
   },
   {
     trigger: "Subscription Expiring",
     action: "Renewal Campaign",
     icon: RefreshCw,
-    color: "text-amber-400",
-    bg: "bg-amber-500/10",
+    color: "text-violet-400",
+    bg: "bg-violet-500/10",
   },
   {
     trigger: "Inactive User",
@@ -50,13 +50,12 @@ export function Automation() {
     <section className="py-20 sm:py-32 bg-card/50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">
+          <h2 className="font-display text-3xl sm:text-4xl">
             Automation That{" "}
             <span className="gradient-text">Runs Your Business</span>
           </h2>
-          <p className="mt-4 text-muted-foreground">
-            Set up once, run forever. Intelligent workflows that trigger
-            automatically based on customer actions.
+          <p className="mt-4 text-lg text-muted-foreground">
+            Set it up once. It runs forever. Your business works even when you don&apos;t.
           </p>
         </div>
 
@@ -64,7 +63,7 @@ export function Automation() {
           {automations.map((auto) => (
             <div
               key={auto.trigger}
-              className="flex items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all hover:border-primary/30"
+              className="flex items-center gap-4 rounded-xl border border-border bg-card p-5 transition-all duration-200 hover:border-primary/30"
             >
               <div
                 className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${auto.bg}`}

@@ -28,11 +28,11 @@ export function Marketplace() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid items-center gap-16 lg:grid-cols-2">
           <div>
-            <h2 className="text-3xl font-bold sm:text-4xl">
+            <h2 className="font-display text-3xl sm:text-4xl">
               Your{" "}
               <span className="gradient-text">AI-Powered Storefront</span>
             </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
+            <p className="mt-4 text-lg leading-relaxed text-muted-foreground">
               Sell anything digital. Velora generates your storefront, product
               pages, checkout flows, and handles payments — all with AI-driven
               personalized recommendations and dynamic upsells.
@@ -41,12 +41,12 @@ export function Marketplace() {
               {[
                 "AI-generated product pages & descriptions",
                 "Dynamic pricing & upsell optimization",
-                "One-click checkout with Stripe",
+                "One-click checkout powered by Stripe",
                 "Personalized recommendations per customer",
               ].map((item) => (
                 <div key={item} className="flex items-center gap-3">
-                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
+                  <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/10">
+                    <div className="h-2 w-2 rounded-full bg-accent" />
                   </div>
                   <span className="text-sm text-muted-foreground">{item}</span>
                 </div>
@@ -58,9 +58,9 @@ export function Marketplace() {
             {products.map((product) => (
               <div
                 key={product.label}
-                className="group flex flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 text-center transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
+                className="group flex cursor-pointer flex-col items-center gap-2 rounded-xl border border-border bg-card p-4 text-center transition-all duration-200 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5"
               >
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-white">
+                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary transition-colors duration-200 group-hover:bg-primary group-hover:text-white">
                   <product.icon className="h-5 w-5" />
                 </div>
                 <span className="text-xs font-medium">{product.label}</span>

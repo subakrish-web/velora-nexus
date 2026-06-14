@@ -1,9 +1,6 @@
 import {
   ArrowUpRight,
-  Bot,
-  CreditCard,
   DollarSign,
-  Package,
   ShoppingCart,
   TrendingUp,
   Users,
