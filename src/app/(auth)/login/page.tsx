@@ -3,7 +3,10 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Chrome, Github, Loader2 } from "lucide-react";
+import { Chrome, Github, Loader2, FlaskConical } from "lucide-react";
+
+const DEMO_EMAIL = "demo@velora.app";
+const DEMO_PASSWORD = "VeloraDemo2024!";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -41,6 +44,29 @@ export default function LoginPage() {
     window.location.href = `/api/auth/signin/${provider}`;
   };
 
+  const handleDemoLogin = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/auth/demo", { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        router.push("/dashboard");
+        router.refresh();
+      } else {
+        // Fallback: pre-fill credentials so user can sign in manually
+        setEmail(DEMO_EMAIL);
+        setPassword(DEMO_PASSWORD);
+        setError(data.error ?? "Demo auto-login failed — credentials pre-filled, click Sign In.");
+      }
+    } catch {
+      setEmail(DEMO_EMAIL);
+      setPassword(DEMO_PASSWORD);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="w-full max-w-md">
       <div className="mb-8">
@@ -48,6 +74,26 @@ export default function LoginPage() {
         <p className="mt-2 text-sm text-muted-foreground">
           Sign in to your Velora account
         </p>
+      </div>
+
+      {/* Demo access banner */}
+      <div className="mb-6 rounded-lg border border-primary/30 bg-primary/5 px-4 py-3">
+        <div className="flex items-start gap-3">
+          <FlaskConical className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+          <div className="flex-1 text-sm">
+            <p className="font-medium text-primary">Try the demo</p>
+            <p className="mt-0.5 text-muted-foreground">
+              Explore all features with a pre-loaded test account.
+            </p>
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              className="mt-2 cursor-pointer rounded-md bg-primary px-3 py-1 text-xs font-medium text-white transition-opacity hover:opacity-90"
+            >
+              Fill Demo Credentials
+            </button>
+          </div>
+        </div>
       </div>
 
       {error && (

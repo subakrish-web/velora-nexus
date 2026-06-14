@@ -35,6 +35,33 @@
   --font-display: "Calistoga", serif;
 }
 
+/* ── Light theme overrides ── */
+:root[data-theme="light"],
+.light {
+  --color-background: #FAFAF9;
+  --color-foreground: #1C1917;
+  --color-card: #FFFFFF;
+  --color-card-foreground: #1C1917;
+  --color-popover: #FFFFFF;
+  --color-popover-foreground: #1C1917;
+  --color-primary: #D97706;
+  --color-primary-foreground: #FFFFFF;
+  --color-secondary: #F5F5F4;
+  --color-secondary-foreground: #1C1917;
+  --color-muted: #F5F5F4;
+  --color-muted-foreground: #78716C;
+  --color-accent: #059669;
+  --color-accent-foreground: #FFFFFF;
+  --color-destructive: #DC2626;
+  --color-destructive-foreground: #FFFFFF;
+  --color-border: #E7E5E4;
+  --color-input: #E7E5E4;
+  --color-ring: #D97706;
+  --color-sidebar: #FFFFFF;
+  --color-sidebar-foreground: #1C1917;
+  --color-sidebar-border: #E7E5E4;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -43,6 +70,7 @@ body {
   background: var(--color-background);
   color: var(--color-foreground);
   font-family: var(--font-sans);
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 @layer base {

@@ -1,6 +1,7 @@
 "use client";
 
 import { Bell, Search, Menu } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface DashboardHeaderProps {
   onMenuClick?: () => void;
@@ -27,7 +28,8 @@ export function DashboardHeader({ onMenuClick }: DashboardHeaderProps) {
         </div>
       </div>
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
         <button
           className="relative cursor-pointer rounded-lg p-2 text-muted-foreground transition-colors duration-150 hover:bg-secondary hover:text-foreground"
           aria-label="Notifications"

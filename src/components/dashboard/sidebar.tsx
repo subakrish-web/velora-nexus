@@ -9,8 +9,10 @@ import {
   Bot,
   ChevronLeft,
   CreditCard,
+  FileCode,
   Globe,
   Home,
+  LayoutTemplate,
   Package,
   Settings,
   ShoppingCart,
@@ -29,6 +31,8 @@ const sidebarLinks = [
   { label: "AI Agents", href: "/dashboard/ai", icon: Bot },
   { label: "Social", href: "/dashboard/social", icon: Globe },
   { label: "Automations", href: "/dashboard/automations", icon: Zap },
+  { label: "Templates", href: "/dashboard/templates", icon: LayoutTemplate },
+  { label: "Code Editor", href: "/dashboard/code", icon: FileCode },
   { label: "Settings", href: "/dashboard/settings", icon: Settings },
 ];
 
